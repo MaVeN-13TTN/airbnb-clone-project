@@ -50,6 +50,7 @@ The messaging system facilitates communication between guests and hosts before, 
 ## API Endpoints
 
 ### Authentication Endpoints
+
 - `POST /api/auth/register/` - Register a new user account
 - `POST /api/auth/login/` - Authenticate user and receive JWT token
 - `POST /api/auth/logout/` - Invalidate user's JWT token
@@ -58,6 +59,7 @@ The messaging system facilitates communication between guests and hosts before, 
 - `POST /api/auth/password/reset/confirm/` - Confirm password reset with token
 
 ### User Endpoints
+
 - `GET /api/users/` - List all users (admin only)
 - `POST /api/users/` - Create a new user (admin only)
 - `GET /api/users/{user_id}/` - Retrieve a specific user's profile
@@ -67,6 +69,7 @@ The messaging system facilitates communication between guests and hosts before, 
 - `PUT /api/users/me/` - Update current user's profile
 
 ### Property Endpoints
+
 - `GET /api/properties/` - List all properties with filtering options
 - `POST /api/properties/` - Create a new property listing
 - `GET /api/properties/{property_id}/` - Retrieve a specific property
@@ -76,11 +79,13 @@ The messaging system facilitates communication between guests and hosts before, 
 - `GET /api/properties/search/` - Search properties with advanced filters
 
 ### Property Image Endpoints
+
 - `POST /api/properties/{property_id}/images/` - Upload property images
 - `GET /api/properties/{property_id}/images/` - List all images for a property
 - `DELETE /api/properties/{property_id}/images/{image_id}/` - Delete a property image
 
 ### Amenity Endpoints
+
 - `GET /api/amenities/` - List all available amenities
 - `POST /api/amenities/` - Create a new amenity (admin only)
 - `GET /api/amenities/{amenity_id}/` - Retrieve a specific amenity
@@ -88,6 +93,7 @@ The messaging system facilitates communication between guests and hosts before, 
 - `DELETE /api/amenities/{amenity_id}/` - Delete a specific amenity (admin only)
 
 ### Booking Endpoints
+
 - `GET /api/bookings/` - List all bookings for current user
 - `POST /api/bookings/` - Create a new booking
 - `GET /api/bookings/{booking_id}/` - Retrieve a specific booking
@@ -97,6 +103,7 @@ The messaging system facilitates communication between guests and hosts before, 
 - `GET /api/bookings/availability/` - Check property availability for dates
 
 ### Payment Endpoints
+
 - `POST /api/payments/` - Process a new payment
 - `GET /api/payments/` - List all payments for current user
 - `GET /api/payments/{payment_id}/` - Retrieve a specific payment
@@ -104,6 +111,7 @@ The messaging system facilitates communication between guests and hosts before, 
 - `GET /api/payments/history/` - Get payment history for current user
 
 ### Review Endpoints
+
 - `GET /api/reviews/` - List all reviews
 - `POST /api/reviews/` - Create a new review
 - `GET /api/reviews/{review_id}/` - Retrieve a specific review
@@ -113,6 +121,7 @@ The messaging system facilitates communication between guests and hosts before, 
 - `GET /api/users/{user_id}/reviews/` - List all reviews by or for a user
 
 ### Messaging Endpoints
+
 - `GET /api/messages/` - List all conversations for current user
 - `POST /api/messages/` - Start a new conversation
 - `GET /api/messages/{conversation_id}/` - Retrieve messages in a conversation
@@ -120,11 +129,13 @@ The messaging system facilitates communication between guests and hosts before, 
 - `PUT /api/messages/{message_id}/read/` - Mark a message as read
 
 ### Notification Endpoints
+
 - `GET /api/notifications/` - List all notifications for current user
 - `PUT /api/notifications/{notification_id}/read/` - Mark a notification as read
 - `PUT /api/notifications/settings/` - Update notification preferences
 
 ### GraphQL Endpoint
+
 - `POST /api/graphql/` - GraphQL endpoint for flexible querying
 
 ## API Security
@@ -190,6 +201,7 @@ Comprehensive security logging and real-time monitoring detect and alert on susp
 ## Database Design
 
 ### Users
+
 - **Fields**:
   - user_id (Primary Key)
   - email (Unique)
@@ -202,6 +214,7 @@ Comprehensive security logging and real-time monitoring detect and alert on susp
   - One user can write multiple reviews
 
 ### Properties
+
 - **Fields**:
   - property_id (Primary Key)
   - host_id (Foreign Key to Users)
@@ -215,6 +228,7 @@ Comprehensive security logging and real-time monitoring detect and alert on susp
   - One property can have multiple reviews
 
 ### Bookings
+
 - **Fields**:
   - booking_id (Primary Key)
   - property_id (Foreign Key to Properties)
@@ -228,6 +242,7 @@ Comprehensive security logging and real-time monitoring detect and alert on susp
   - One booking can have one payment
 
 ### Reviews
+
 - **Fields**:
   - review_id (Primary Key)
   - property_id (Foreign Key to Properties)
@@ -241,6 +256,7 @@ Comprehensive security logging and real-time monitoring detect and alert on susp
   - Each review is associated with one booking
 
 ### Payments
+
 - **Fields**:
   - payment_id (Primary Key)
   - booking_id (Foreign Key to Bookings)
@@ -252,6 +268,7 @@ Comprehensive security logging and real-time monitoring detect and alert on susp
   - Each payment is made by one user (indirectly through booking)
 
 ### Amenities
+
 - **Fields**:
   - amenity_id (Primary Key)
   - name
@@ -275,3 +292,38 @@ Comprehensive security logging and real-time monitoring detect and alert on susp
 - **UI/UX Designer**: Although primarily a backend project, they provide input on API design to ensure it meets frontend requirements and delivers a seamless user experience.
 
 - **Security Specialist**: Reviews code and infrastructure for security vulnerabilities, implements authentication and authorization mechanisms, and ensures data protection compliance.
+
+## CI/CD Pipeline
+
+Continuous Integration and Continuous Deployment (CI/CD) pipelines are automated workflows that enable developers to frequently integrate code changes, test them automatically, and deploy successful builds to production environments. For our AirBnB clone project, CI/CD pipelines are essential for maintaining code quality, reducing integration issues, and accelerating the delivery of new features to users.
+
+### Benefits for the Project
+
+- **Automated Testing**: Every code change triggers automated tests, ensuring that new features don't break existing functionality.
+- **Consistent Environments**: Containerization ensures that the application behaves the same way across development, testing, and production environments.
+- **Rapid Feedback**: Developers receive immediate feedback on their code changes, allowing for quick identification and resolution of issues.
+- **Reduced Manual Errors**: Automation of the build, test, and deployment processes eliminates human error in repetitive tasks.
+- **Faster Release Cycles**: Streamlined deployment process enables more frequent and reliable releases of new features.
+
+### Tools and Technologies
+
+- **GitHub Actions**: Automates workflows directly from the GitHub repository, including running tests and deploying code when changes are pushed.
+- **Docker**: Creates containerized environments for consistent development, testing, and deployment.
+- **Docker Compose**: Manages multi-container Docker applications, ensuring all services work together properly.
+- **pytest**: Runs automated tests for Python code to verify functionality.
+- **flake8/black**: Enforces code style and quality standards.
+- **AWS CodePipeline/CodeBuild**: Manages the CI/CD pipeline for deployment to AWS infrastructure.
+- **Kubernetes**: Orchestrates containerized applications for production deployment.
+- **Terraform**: Implements infrastructure as code for consistent environment provisioning.
+- **Prometheus/Grafana**: Monitors application performance and health in production.
+
+### Pipeline Stages
+
+1. **Code Commit**: Developer pushes code to the repository
+2. **Build**: Application is built and dependencies are installed
+3. **Test**: Automated tests are run (unit tests, integration tests)
+4. **Code Quality**: Static code analysis and style checking
+5. **Staging Deployment**: Successful builds are deployed to a staging environment
+6. **Integration Testing**: End-to-end tests are run in the staging environment
+7. **Production Deployment**: Approved changes are deployed to production
+8. **Monitoring**: Application performance and errors are monitored
