@@ -15,14 +15,25 @@ This project is a backend implementation of an AirBnB clone, providing a robust 
 
 ## Technology Stack
 
-- Django: High-level Python web framework
-- Django REST Framework: Tools for creating RESTful APIs
-- PostgreSQL: Relational database for data storage
-- GraphQL: Flexible query mechanism
-- Celery: For handling asynchronous tasks
-- Redis: Caching and session management
-- Docker: Containerization for development and deployment
-- CI/CD Pipelines: Automated testing and deployment
+- **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design. Used as the foundation for building our backend application, handling URL routing, view logic, and ORM functionality.
+
+- **Django REST Framework**: A powerful and flexible toolkit for building Web APIs on top of Django. Provides serialization, authentication, and viewsets to create RESTful endpoints for our application.
+
+- **PostgreSQL**: An advanced open-source relational database that provides robustness, performance, and advanced features. Stores all application data including user profiles, property listings, bookings, and reviews.
+
+- **GraphQL**: A query language for APIs that enables clients to request exactly the data they need. Provides a more flexible alternative to REST for complex data fetching requirements.
+
+- **Celery**: A distributed task queue system that handles asynchronous processing. Used for background tasks like sending email notifications, processing payments, and generating reports.
+
+- **Redis**: An in-memory data structure store used as a database, cache, and message broker. Supports Celery as a message broker and provides caching to improve application performance.
+
+- **Docker**: A platform for developing, shipping, and running applications in containers. Ensures consistent environments across development, testing, and production.
+
+- **CI/CD Pipelines**: Automated workflows for continuous integration and deployment. Automates testing, building, and deploying the application to ensure code quality and streamline releases.
+
+- **JWT Authentication**: JSON Web Tokens for secure authentication and authorization. Provides stateless authentication for API requests.
+
+- **Nginx**: A high-performance web server that acts as a reverse proxy. Handles load balancing, SSL termination, and serves static files.
 
 ## Team Roles
 
