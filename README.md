@@ -16,27 +16,35 @@ This project is a backend implementation of an AirBnB clone, providing a robust 
 ## Feature Breakdown
 
 ### User Management
+
 The user management system handles user registration, authentication, and profile management. It provides secure login functionality using JWT tokens and allows users to create and update their profiles with personal information and preferences. This feature forms the foundation of the platform by establishing user identity and enabling personalized experiences.
 
 ### Property Management
+
 The property management feature enables hosts to create, update, and manage their property listings. Hosts can add detailed property information including descriptions, amenities, pricing, availability calendars, and photo galleries. This feature is essential for building the marketplace inventory and providing comprehensive property information to potential guests.
 
 ### Booking System
+
 The booking system facilitates the reservation process between guests and hosts. It handles availability checking, booking requests, confirmations, and cancellations while maintaining the integrity of the booking calendar. This core feature enables the primary business function of the platform by connecting guests with available properties.
 
 ### Payment Processing
+
 The payment processing feature securely handles financial transactions between guests and hosts. It manages payment collection during booking, holds funds until check-in, and handles disbursement to hosts after successful stays. This feature ensures financial security and trust in the platform by providing reliable and transparent payment handling.
 
 ### Review System
+
 The review system allows guests to rate and review properties after their stay, and hosts to review guests. It calculates and displays average ratings and presents review comments to help future users make informed decisions. This feature builds trust in the platform by providing social proof and accountability for both hosts and guests.
 
 ### Search and Filtering
+
 The search and filtering system enables users to find properties based on location, dates, price range, amenities, and other criteria. It implements efficient indexing and query optimization to provide fast and relevant search results. This feature enhances user experience by helping guests quickly find properties that match their specific requirements.
 
 ### Notification System
+
 The notification system keeps users informed about important events such as booking confirmations, messages, and upcoming stays. It delivers notifications through multiple channels including email, SMS, and in-app alerts using asynchronous processing. This feature improves user engagement and ensures timely communication between all parties.
 
 ### Messaging System
+
 The messaging system facilitates communication between guests and hosts before, during, and after bookings. It provides a secure and organized way to ask questions, share check-in details, and resolve issues. This feature enhances the user experience by enabling clear communication and building trust between users.
 
 ## Technology Stack
@@ -64,6 +72,7 @@ The messaging system facilitates communication between guests and hosts before, 
 ## Database Design
 
 ### Users
+
 - **Fields**:
   - user_id (Primary Key)
   - email (Unique)
@@ -76,6 +85,7 @@ The messaging system facilitates communication between guests and hosts before, 
   - One user can write multiple reviews
 
 ### Properties
+
 - **Fields**:
   - property_id (Primary Key)
   - host_id (Foreign Key to Users)
@@ -89,6 +99,7 @@ The messaging system facilitates communication between guests and hosts before, 
   - One property can have multiple reviews
 
 ### Bookings
+
 - **Fields**:
   - booking_id (Primary Key)
   - property_id (Foreign Key to Properties)
@@ -102,6 +113,7 @@ The messaging system facilitates communication between guests and hosts before, 
   - One booking can have one payment
 
 ### Reviews
+
 - **Fields**:
   - review_id (Primary Key)
   - property_id (Foreign Key to Properties)
@@ -115,6 +127,7 @@ The messaging system facilitates communication between guests and hosts before, 
   - Each review is associated with one booking
 
 ### Payments
+
 - **Fields**:
   - payment_id (Primary Key)
   - booking_id (Foreign Key to Bookings)
@@ -126,6 +139,7 @@ The messaging system facilitates communication between guests and hosts before, 
   - Each payment is made by one user (indirectly through booking)
 
 ### Amenities
+
 - **Fields**:
   - amenity_id (Primary Key)
   - name
@@ -149,3 +163,41 @@ The messaging system facilitates communication between guests and hosts before, 
 - **UI/UX Designer**: Although primarily a backend project, they provide input on API design to ensure it meets frontend requirements and delivers a seamless user experience.
 
 - **Security Specialist**: Reviews code and infrastructure for security vulnerabilities, implements authentication and authorization mechanisms, and ensures data protection compliance.
+
+## API Security
+
+### Authentication & Authorization
+
+The API implements JWT (JSON Web Token) based authentication to verify user identity and session management. Role-based authorization controls ensure users can only access resources they have permission for. These measures are crucial for protecting user accounts from unauthorized access and preventing data breaches that could compromise personal information and payment details.
+
+### Data Encryption
+
+All sensitive data, including personal information and payment details, is encrypted both in transit (using HTTPS/TLS) and at rest (using database-level encryption). This multi-layered encryption approach is essential for protecting user privacy and complying with data protection regulations like GDPR and CCPA.
+
+### Input Validation & Sanitization
+
+All API endpoints implement strict input validation and sanitization to prevent injection attacks (SQL, NoSQL, XSS). This security measure is vital for maintaining data integrity and preventing attackers from manipulating the application to access unauthorized data or execute malicious code.
+
+### Rate Limiting
+
+API rate limiting is implemented to prevent abuse, brute force attacks, and denial of service. This protects the platform from automated attacks and ensures fair resource allocation among users, maintaining system availability and performance for legitimate users.
+
+### Payment Security
+
+Payment processing follows PCI DSS compliance standards, with tokenization of payment information and secure integration with payment processors. This is critical for protecting financial transactions and maintaining user trust in the platform's ability to handle payments securely.
+
+### API Keys & Secrets Management
+
+API keys, secrets, and credentials are securely stored using environment variables and secret management tools, never hardcoded in the codebase. This practice prevents credential leakage and unauthorized API access that could compromise the entire system.
+
+### CORS (Cross-Origin Resource Sharing)
+
+Properly configured CORS policies restrict which domains can access the API, preventing cross-site request forgery attacks. This is important for ensuring that only authorized frontend applications can interact with the backend API.
+
+### Security Headers
+
+HTTP security headers (Content-Security-Policy, X-XSS-Protection, etc.) are implemented to mitigate common web vulnerabilities. These headers provide an additional layer of protection against various attack vectors that could compromise user data or application functionality.
+
+### Logging & Monitoring
+
+Comprehensive security logging and real-time monitoring detect and alert on suspicious activities and potential security breaches. This allows for quick response to security incidents, minimizing potential damage and enabling continuous improvement of security measures.
