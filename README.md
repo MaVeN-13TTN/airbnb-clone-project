@@ -35,6 +35,79 @@ This project is a backend implementation of an AirBnB clone, providing a robust 
 
 - **Nginx**: A high-performance web server that acts as a reverse proxy. Handles load balancing, SSL termination, and serves static files.
 
+## Database Design
+
+### Users
+- **Fields**:
+  - user_id (Primary Key)
+  - email (Unique)
+  - password (Hashed)
+  - name
+  - profile_picture
+- **Relationships**:
+  - One user can have multiple properties (as a host)
+  - One user can have multiple bookings (as a guest)
+  - One user can write multiple reviews
+
+### Properties
+- **Fields**:
+  - property_id (Primary Key)
+  - host_id (Foreign Key to Users)
+  - title
+  - description
+  - price_per_night
+  - location
+- **Relationships**:
+  - Each property belongs to one user (host)
+  - One property can have multiple bookings
+  - One property can have multiple reviews
+
+### Bookings
+- **Fields**:
+  - booking_id (Primary Key)
+  - property_id (Foreign Key to Properties)
+  - guest_id (Foreign Key to Users)
+  - check_in_date
+  - check_out_date
+  - total_price
+- **Relationships**:
+  - Each booking belongs to one property
+  - Each booking belongs to one user (guest)
+  - One booking can have one payment
+
+### Reviews
+- **Fields**:
+  - review_id (Primary Key)
+  - property_id (Foreign Key to Properties)
+  - user_id (Foreign Key to Users)
+  - rating (1-5 stars)
+  - comment
+  - date_posted
+- **Relationships**:
+  - Each review belongs to one property
+  - Each review is written by one user
+  - Each review is associated with one booking
+
+### Payments
+- **Fields**:
+  - payment_id (Primary Key)
+  - booking_id (Foreign Key to Bookings)
+  - amount
+  - payment_date
+  - payment_status
+- **Relationships**:
+  - Each payment belongs to one booking
+  - Each payment is made by one user (indirectly through booking)
+
+### Amenities
+- **Fields**:
+  - amenity_id (Primary Key)
+  - name
+  - icon
+  - category
+- **Relationships**:
+  - Many amenities can belong to many properties (Many-to-Many)
+
 ## Team Roles
 
 - **Backend Developer**: Responsible for implementing API endpoints, database schemas, and business logic. They develop the core functionality of the application using Django and Django REST Framework.
