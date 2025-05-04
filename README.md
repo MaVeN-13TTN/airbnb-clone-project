@@ -13,6 +13,32 @@ This project is a backend implementation of an AirBnB clone, providing a robust 
 - Review System: Allow users to leave reviews and ratings for properties
 - Data Optimization: Ensure efficient data retrieval and storage
 
+## Feature Breakdown
+
+### User Management
+The user management system handles user registration, authentication, and profile management. It provides secure login functionality using JWT tokens and allows users to create and update their profiles with personal information and preferences. This feature forms the foundation of the platform by establishing user identity and enabling personalized experiences.
+
+### Property Management
+The property management feature enables hosts to create, update, and manage their property listings. Hosts can add detailed property information including descriptions, amenities, pricing, availability calendars, and photo galleries. This feature is essential for building the marketplace inventory and providing comprehensive property information to potential guests.
+
+### Booking System
+The booking system facilitates the reservation process between guests and hosts. It handles availability checking, booking requests, confirmations, and cancellations while maintaining the integrity of the booking calendar. This core feature enables the primary business function of the platform by connecting guests with available properties.
+
+### Payment Processing
+The payment processing feature securely handles financial transactions between guests and hosts. It manages payment collection during booking, holds funds until check-in, and handles disbursement to hosts after successful stays. This feature ensures financial security and trust in the platform by providing reliable and transparent payment handling.
+
+### Review System
+The review system allows guests to rate and review properties after their stay, and hosts to review guests. It calculates and displays average ratings and presents review comments to help future users make informed decisions. This feature builds trust in the platform by providing social proof and accountability for both hosts and guests.
+
+### Search and Filtering
+The search and filtering system enables users to find properties based on location, dates, price range, amenities, and other criteria. It implements efficient indexing and query optimization to provide fast and relevant search results. This feature enhances user experience by helping guests quickly find properties that match their specific requirements.
+
+### Notification System
+The notification system keeps users informed about important events such as booking confirmations, messages, and upcoming stays. It delivers notifications through multiple channels including email, SMS, and in-app alerts using asynchronous processing. This feature improves user engagement and ensures timely communication between all parties.
+
+### Messaging System
+The messaging system facilitates communication between guests and hosts before, during, and after bookings. It provides a secure and organized way to ask questions, share check-in details, and resolve issues. This feature enhances the user experience by enabling clear communication and building trust between users.
+
 ## Technology Stack
 
 - **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design. Used as the foundation for building our backend application, handling URL routing, view logic, and ORM functionality.
