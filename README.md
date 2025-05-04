@@ -47,122 +47,85 @@ The notification system keeps users informed about important events such as book
 
 The messaging system facilitates communication between guests and hosts before, during, and after bookings. It provides a secure and organized way to ask questions, share check-in details, and resolve issues. This feature enhances the user experience by enabling clear communication and building trust between users.
 
-## Technology Stack
+## API Endpoints
 
-- **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design. Used as the foundation for building our backend application, handling URL routing, view logic, and ORM functionality.
+### Authentication Endpoints
+- `POST /api/auth/register/` - Register a new user account
+- `POST /api/auth/login/` - Authenticate user and receive JWT token
+- `POST /api/auth/logout/` - Invalidate user's JWT token
+- `POST /api/auth/refresh/` - Refresh an expired JWT token
+- `POST /api/auth/password/reset/` - Request password reset email
+- `POST /api/auth/password/reset/confirm/` - Confirm password reset with token
 
-- **Django REST Framework**: A powerful and flexible toolkit for building Web APIs on top of Django. Provides serialization, authentication, and viewsets to create RESTful endpoints for our application.
+### User Endpoints
+- `GET /api/users/` - List all users (admin only)
+- `POST /api/users/` - Create a new user (admin only)
+- `GET /api/users/{user_id}/` - Retrieve a specific user's profile
+- `PUT /api/users/{user_id}/` - Update a specific user's profile
+- `DELETE /api/users/{user_id}/` - Delete a specific user (admin or owner)
+- `GET /api/users/me/` - Retrieve current user's profile
+- `PUT /api/users/me/` - Update current user's profile
 
-- **PostgreSQL**: An advanced open-source relational database that provides robustness, performance, and advanced features. Stores all application data including user profiles, property listings, bookings, and reviews.
+### Property Endpoints
+- `GET /api/properties/` - List all properties with filtering options
+- `POST /api/properties/` - Create a new property listing
+- `GET /api/properties/{property_id}/` - Retrieve a specific property
+- `PUT /api/properties/{property_id}/` - Update a specific property
+- `DELETE /api/properties/{property_id}/` - Delete a specific property
+- `GET /api/properties/featured/` - List featured properties
+- `GET /api/properties/search/` - Search properties with advanced filters
 
-- **GraphQL**: A query language for APIs that enables clients to request exactly the data they need. Provides a more flexible alternative to REST for complex data fetching requirements.
+### Property Image Endpoints
+- `POST /api/properties/{property_id}/images/` - Upload property images
+- `GET /api/properties/{property_id}/images/` - List all images for a property
+- `DELETE /api/properties/{property_id}/images/{image_id}/` - Delete a property image
 
-- **Celery**: A distributed task queue system that handles asynchronous processing. Used for background tasks like sending email notifications, processing payments, and generating reports.
+### Amenity Endpoints
+- `GET /api/amenities/` - List all available amenities
+- `POST /api/amenities/` - Create a new amenity (admin only)
+- `GET /api/amenities/{amenity_id}/` - Retrieve a specific amenity
+- `PUT /api/amenities/{amenity_id}/` - Update a specific amenity (admin only)
+- `DELETE /api/amenities/{amenity_id}/` - Delete a specific amenity (admin only)
 
-- **Redis**: An in-memory data structure store used as a database, cache, and message broker. Supports Celery as a message broker and provides caching to improve application performance.
+### Booking Endpoints
+- `GET /api/bookings/` - List all bookings for current user
+- `POST /api/bookings/` - Create a new booking
+- `GET /api/bookings/{booking_id}/` - Retrieve a specific booking
+- `PUT /api/bookings/{booking_id}/` - Update a specific booking
+- `DELETE /api/bookings/{booking_id}/` - Cancel a specific booking
+- `GET /api/properties/{property_id}/bookings/` - List all bookings for a property (host only)
+- `GET /api/bookings/availability/` - Check property availability for dates
 
-- **Docker**: A platform for developing, shipping, and running applications in containers. Ensures consistent environments across development, testing, and production.
+### Payment Endpoints
+- `POST /api/payments/` - Process a new payment
+- `GET /api/payments/` - List all payments for current user
+- `GET /api/payments/{payment_id}/` - Retrieve a specific payment
+- `POST /api/payments/{payment_id}/refund/` - Process a refund
+- `GET /api/payments/history/` - Get payment history for current user
 
-- **CI/CD Pipelines**: Automated workflows for continuous integration and deployment. Automates testing, building, and deploying the application to ensure code quality and streamline releases.
+### Review Endpoints
+- `GET /api/reviews/` - List all reviews
+- `POST /api/reviews/` - Create a new review
+- `GET /api/reviews/{review_id}/` - Retrieve a specific review
+- `PUT /api/reviews/{review_id}/` - Update a specific review
+- `DELETE /api/reviews/{review_id}/` - Delete a specific review
+- `GET /api/properties/{property_id}/reviews/` - List all reviews for a property
+- `GET /api/users/{user_id}/reviews/` - List all reviews by or for a user
 
-- **JWT Authentication**: JSON Web Tokens for secure authentication and authorization. Provides stateless authentication for API requests.
+### Messaging Endpoints
+- `GET /api/messages/` - List all conversations for current user
+- `POST /api/messages/` - Start a new conversation
+- `GET /api/messages/{conversation_id}/` - Retrieve messages in a conversation
+- `POST /api/messages/{conversation_id}/` - Send a message in a conversation
+- `PUT /api/messages/{message_id}/read/` - Mark a message as read
 
-- **Nginx**: A high-performance web server that acts as a reverse proxy. Handles load balancing, SSL termination, and serves static files.
+### Notification Endpoints
+- `GET /api/notifications/` - List all notifications for current user
+- `PUT /api/notifications/{notification_id}/read/` - Mark a notification as read
+- `PUT /api/notifications/settings/` - Update notification preferences
 
-## Database Design
-
-### Users
-
-- **Fields**:
-  - user_id (Primary Key)
-  - email (Unique)
-  - password (Hashed)
-  - name
-  - profile_picture
-- **Relationships**:
-  - One user can have multiple properties (as a host)
-  - One user can have multiple bookings (as a guest)
-  - One user can write multiple reviews
-
-### Properties
-
-- **Fields**:
-  - property_id (Primary Key)
-  - host_id (Foreign Key to Users)
-  - title
-  - description
-  - price_per_night
-  - location
-- **Relationships**:
-  - Each property belongs to one user (host)
-  - One property can have multiple bookings
-  - One property can have multiple reviews
-
-### Bookings
-
-- **Fields**:
-  - booking_id (Primary Key)
-  - property_id (Foreign Key to Properties)
-  - guest_id (Foreign Key to Users)
-  - check_in_date
-  - check_out_date
-  - total_price
-- **Relationships**:
-  - Each booking belongs to one property
-  - Each booking belongs to one user (guest)
-  - One booking can have one payment
-
-### Reviews
-
-- **Fields**:
-  - review_id (Primary Key)
-  - property_id (Foreign Key to Properties)
-  - user_id (Foreign Key to Users)
-  - rating (1-5 stars)
-  - comment
-  - date_posted
-- **Relationships**:
-  - Each review belongs to one property
-  - Each review is written by one user
-  - Each review is associated with one booking
-
-### Payments
-
-- **Fields**:
-  - payment_id (Primary Key)
-  - booking_id (Foreign Key to Bookings)
-  - amount
-  - payment_date
-  - payment_status
-- **Relationships**:
-  - Each payment belongs to one booking
-  - Each payment is made by one user (indirectly through booking)
-
-### Amenities
-
-- **Fields**:
-  - amenity_id (Primary Key)
-  - name
-  - icon
-  - category
-- **Relationships**:
-  - Many amenities can belong to many properties (Many-to-Many)
-
-## Team Roles
-
-- **Backend Developer**: Responsible for implementing API endpoints, database schemas, and business logic. They develop the core functionality of the application using Django and Django REST Framework.
-
-- **Database Administrator**: Manages database design, schema creation, indexing, and optimizations. They ensure efficient data storage and retrieval through PostgreSQL and implement caching strategies with Redis.
-
-- **DevOps Engineer**: Handles deployment, monitoring, and scaling of the backend services. They set up Docker containers, configure CI/CD pipelines, and ensure the system runs smoothly in production environments.
-
-- **QA Engineer**: Ensures the backend functionalities are thoroughly tested and meet quality standards. They develop and execute test cases, perform integration testing, and identify bugs before deployment.
-
-- **Project Manager**: Coordinates the team's efforts, manages timelines, and ensures project goals are met. They facilitate communication between team members and stakeholders.
-
-- **UI/UX Designer**: Although primarily a backend project, they provide input on API design to ensure it meets frontend requirements and delivers a seamless user experience.
-
-- **Security Specialist**: Reviews code and infrastructure for security vulnerabilities, implements authentication and authorization mechanisms, and ensures data protection compliance.
+### GraphQL Endpoint
+- `POST /api/graphql/` - GraphQL endpoint for flexible querying
 
 ## API Security
 
@@ -201,3 +164,114 @@ HTTP security headers (Content-Security-Policy, X-XSS-Protection, etc.) are impl
 ### Logging & Monitoring
 
 Comprehensive security logging and real-time monitoring detect and alert on suspicious activities and potential security breaches. This allows for quick response to security incidents, minimizing potential damage and enabling continuous improvement of security measures.
+
+## Technology Stack
+
+- **Django**: A high-level Python web framework that encourages rapid development and clean, pragmatic design. Used as the foundation for building our backend application, handling URL routing, view logic, and ORM functionality.
+
+- **Django REST Framework**: A powerful and flexible toolkit for building Web APIs on top of Django. Provides serialization, authentication, and viewsets to create RESTful endpoints for our application.
+
+- **PostgreSQL**: An advanced open-source relational database that provides robustness, performance, and advanced features. Stores all application data including user profiles, property listings, bookings, and reviews.
+
+- **GraphQL**: A query language for APIs that enables clients to request exactly the data they need. Provides a more flexible alternative to REST for complex data fetching requirements.
+
+- **Celery**: A distributed task queue system that handles asynchronous processing. Used for background tasks like sending email notifications, processing payments, and generating reports.
+
+- **Redis**: An in-memory data structure store used as a database, cache, and message broker. Supports Celery as a message broker and provides caching to improve application performance.
+
+- **Docker**: A platform for developing, shipping, and running applications in containers. Ensures consistent environments across development, testing, and production.
+
+- **CI/CD Pipelines**: Automated workflows for continuous integration and deployment. Automates testing, building, and deploying the application to ensure code quality and streamline releases.
+
+- **JWT Authentication**: JSON Web Tokens for secure authentication and authorization. Provides stateless authentication for API requests.
+
+- **Nginx**: A high-performance web server that acts as a reverse proxy. Handles load balancing, SSL termination, and serves static files.
+
+## Database Design
+
+### Users
+- **Fields**:
+  - user_id (Primary Key)
+  - email (Unique)
+  - password (Hashed)
+  - name
+  - profile_picture
+- **Relationships**:
+  - One user can have multiple properties (as a host)
+  - One user can have multiple bookings (as a guest)
+  - One user can write multiple reviews
+
+### Properties
+- **Fields**:
+  - property_id (Primary Key)
+  - host_id (Foreign Key to Users)
+  - title
+  - description
+  - price_per_night
+  - location
+- **Relationships**:
+  - Each property belongs to one user (host)
+  - One property can have multiple bookings
+  - One property can have multiple reviews
+
+### Bookings
+- **Fields**:
+  - booking_id (Primary Key)
+  - property_id (Foreign Key to Properties)
+  - guest_id (Foreign Key to Users)
+  - check_in_date
+  - check_out_date
+  - total_price
+- **Relationships**:
+  - Each booking belongs to one property
+  - Each booking belongs to one user (guest)
+  - One booking can have one payment
+
+### Reviews
+- **Fields**:
+  - review_id (Primary Key)
+  - property_id (Foreign Key to Properties)
+  - user_id (Foreign Key to Users)
+  - rating (1-5 stars)
+  - comment
+  - date_posted
+- **Relationships**:
+  - Each review belongs to one property
+  - Each review is written by one user
+  - Each review is associated with one booking
+
+### Payments
+- **Fields**:
+  - payment_id (Primary Key)
+  - booking_id (Foreign Key to Bookings)
+  - amount
+  - payment_date
+  - payment_status
+- **Relationships**:
+  - Each payment belongs to one booking
+  - Each payment is made by one user (indirectly through booking)
+
+### Amenities
+- **Fields**:
+  - amenity_id (Primary Key)
+  - name
+  - icon
+  - category
+- **Relationships**:
+  - Many amenities can belong to many properties (Many-to-Many)
+
+## Team Roles
+
+- **Backend Developer**: Responsible for implementing API endpoints, database schemas, and business logic. They develop the core functionality of the application using Django and Django REST Framework.
+
+- **Database Administrator**: Manages database design, schema creation, indexing, and optimizations. They ensure efficient data storage and retrieval through PostgreSQL and implement caching strategies with Redis.
+
+- **DevOps Engineer**: Handles deployment, monitoring, and scaling of the backend services. They set up Docker containers, configure CI/CD pipelines, and ensure the system runs smoothly in production environments.
+
+- **QA Engineer**: Ensures the backend functionalities are thoroughly tested and meet quality standards. They develop and execute test cases, perform integration testing, and identify bugs before deployment.
+
+- **Project Manager**: Coordinates the team's efforts, manages timelines, and ensures project goals are met. They facilitate communication between team members and stakeholders.
+
+- **UI/UX Designer**: Although primarily a backend project, they provide input on API design to ensure it meets frontend requirements and delivers a seamless user experience.
+
+- **Security Specialist**: Reviews code and infrastructure for security vulnerabilities, implements authentication and authorization mechanisms, and ensures data protection compliance.
